@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+
+{% block main_content %}
+    <div class="d-flex justify-content-center mx-auto">
+        <div class="card mt-5 col-8">
+            <div class="card-body">
+            
+            <div class="d-flex bd-highlight">
+                <div class="p-2 w-100 bd-highlight">
+                    <h5 class="card-title">Movie List</h5>
+                </div>
+                <div class="justify-content-end bd-highlight">
+                    <a class="btn btn-primary" href="/">Add</a>
+                </div>
+            </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Movie Name</th>
+                        <th scope="col">Location</th>
+                        <th scope="col">Time</th>
+                        <th scope="col" colspan="2">Actions</th>
+                        </tr>
+                    </thead>
+                    {% for movie in movies.items %}
+                    <tbody>
+                        <tr>
+                        <th scope="row">{{(movies.per_page * (movies.page - 1))  + loop.index}}</th>
+                        <td>{{movie.movie_name}}</td>
+                        <td>{{movie.location}}</td>
+                        <td>{{movie.time}}</td>
+                        <td><a class="btn btn-primary" href="/movies/update/{{movie.id}}">Update</a></td>
+                        <td>
+                            <form method="POST" action="/delete">
+                                <input type="hidden" class="form-control" id="id" name="id" required value="{{movie.id}}">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                        </tr>
+                    </tbody>
+                    {% endfor %}
+                </table>
+                <!-- Pagination Links-->
+                <div class="text-right">
+                    <a href="{{ url_for('movie_list', page=movies.prev_num) }}"
+                    class="btn btn-outline-dark 
+                    {% if movies.page == 1 %}disabled{% endif %}">
+                        &laquo;
+                    </a><!-- Loop through the number of pages to display a link for each-->
+                    {% for page_num in movies.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}{% if page_num %}
+                <!-- Check for the active page and set the link to "Active"-->
+                            {% if movies.page == page_num %}
+                            <a href="{{ url_for('movie_list', page=page_num) }}"
+                            class="btn btn-dark">
+                                {{ page_num }}
+                            </a>
+                            {% else %}
+                            <a href="{{ url_for('movie_list', page=page_num) }}"
+                            class="btn btn-outline-dark">
+                                {{ page_num }}
+                            </a>
+                            {% endif %}
+                        {% else %}
+                            ...
+                        {% endif %}
+                    {% endfor %}    <a href="{{ url_for('movie_list', page=movies.next_num) }}"
+                    class="btn btn-outline-dark 
+                    {% if movies.page == movies.pages %}disabled{% endif %}">
+                        &raquo;
+                    </a>
+                </div>
+                <p class="text-right mt-3">
+                Showing page {{ movies.page }} of {{ movies.pages }}
+                </p>
+            </div>
+        </div>
+    </div>
+
+{% endblock main_content %}

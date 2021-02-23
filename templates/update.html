@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+
+{% block main_content %}
+    <div class="d-flex justify-content-center mx-auto">
+        <div class="card mt-5 col-8">
+            <div class="card-body">
+                <h5 class="card-title">Update Movie</h5>
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="MovieName">Movie Name</label>
+                        <input type="text" class="form-control" id="movie_name" name="movie_name" aria-describedby="MovieNameHelp" placeholder="Enter Movie name" required value="{{movie.movie_name}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="Location">Location</label>
+                        <input type="text" class="form-control" id="location" name="location" placeholder="Location" required value="{{movie.location}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="Time">Time</label>
+                        <input type="time" class="form-control" id="time" name="time" placeholder="Time" required value="{{movie.time}}">
+                    </div>
+                    <input type="hidden" class="form-control" id="id" name="id" required value="{{movie.id}}">
+                    <button type="submit" class="btn btn-primary">Update Movie</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock main_content %}
